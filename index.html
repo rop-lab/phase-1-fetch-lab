@@ -3,11 +3,61 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>fetch() Lab</title>
-  <script type="text/javascript" src="index.js"></script>
+  <title>Book Fetcher</title>
 </head>
 <body>
-  <main></main>
+
+  <h1>Books List</h1>
+
+  <!-- Display area for books -->
+  <div id="books-list"></div>
+
+  <script>
+    // Your JavaScript code goes here
+
+    // Use the fetch API to make a GET request to the API endpoint
+    fetch('https://anapioficeandfire.com/api/books')
+      .then((response) => {
+        // Check if the response is ok
+        if (response.ok) {
+          // Return the response as JSON
+          return response.json();
+        } else {
+          // If response is not okay, throw an error
+          throw new Error('Something went wrong');
+        }
+      })
+      .then((books) => {
+        // Call the renderBooks function with the books data
+        renderBooks(books);
+      })
+      .catch((error) => {
+        // Log the error to the console
+        console.error(error);
+      });
+
+    // Function to render books
+    function renderBooks(books) {
+      // Get the books list element
+      const booksList = document.getElementById('books-list');
+
+      // Clear any existing content
+      booksList.innerHTML = '';
+
+      // Create a list element to display books
+      const ul = document.createElement('ul');
+
+      // Iterate through each book and create list items
+      books.forEach((book) => {
+        const li = document.createElement('li');
+        li.textContent = `${book.name} by ${book.authors.join(', ')}`;
+        ul.appendChild(li);
+      });
+
+      // Append the list to the books list element
+      booksList.appendChild(ul);
+    }
+  </script>
+
 </body>
 </html>
